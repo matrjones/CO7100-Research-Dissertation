@@ -5,6 +5,7 @@ TODO
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reptile_app/pages/vivarium_display/vivarium_display.dart';
 import '../../../models/vivarium.dart';
 
@@ -26,12 +27,16 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
   final vivNameController = TextEditingController();
   final lightOnController = TextEditingController();
   final lightOffController = TextEditingController();
+  final dayTempController = TextEditingController();
+  final nightTempController = TextEditingController();
 
   @override
   void dispose() {
     vivNameController.dispose();
     lightOnController.dispose();
     lightOffController.dispose();
+    dayTempController.dispose();
+    nightTempController.dispose();
     super.dispose();
   }
 
@@ -45,24 +50,26 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
           child: Column(
             children: [
               Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Vivarium Name:",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
-                          textAlign: TextAlign.left,
-                        ),
-                        TextField(
-                          controller: vivNameController,
-                          decoration: InputDecoration(
-                            labelText: widget.vivarium?.name,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ])),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Vivarium Name:",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 24),
+                      textAlign: TextAlign.left,
+                    ),
+                    TextField(
+                      controller: vivNameController,
+                      decoration: InputDecoration(
+                        labelText: widget.vivarium?.name,
+                        border: const OutlineInputBorder(),
+                      ),
+                    ),
+                  ]
+                )
+              ),
 
               // LIGHTING
               Row(
@@ -73,39 +80,41 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Light On:",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  TextField(
-                                    onTap: () async {
-                                      final TimeOfDay? timeOfDay =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: const TimeOfDay(
-                                                  hour: 0, minute: 0));
-                                      if (timeOfDay != null) {
-                                        setState(() {
-                                          lightOnController.text = timeOfDay
-                                              .toString()
-                                              .substring(10, 15);
-                                        });
-                                      }
-                                    },
-                                    controller: lightOnController,
-                                    decoration: const InputDecoration(
-                                      labelText: '00:00',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ])),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Light On:",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24),
+                                textAlign: TextAlign.left,
+                              ),
+                              TextField(
+                                onTap: () async {
+                                  final TimeOfDay? timeOfDay =
+                                    await showTimePicker(
+                                      context: context,
+                                      initialTime: const TimeOfDay(
+                                        hour: 0, minute: 0));
+                                  if (timeOfDay != null) {
+                                    setState(() {
+                                      lightOnController.text = timeOfDay
+                                        .toString()
+                                        .substring(10, 15);
+                                    });
+                                  }
+                                },
+                                controller: lightOnController,
+                                decoration: const InputDecoration(
+                                  labelText: '00:00',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ]
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -116,39 +125,41 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Light Off:",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  TextField(
-                                    onTap: () async {
-                                      final TimeOfDay? timeOfDay =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: const TimeOfDay(
-                                                  hour: 0, minute: 0));
-                                      if (timeOfDay != null) {
-                                        setState(() {
-                                          lightOffController.text = timeOfDay
-                                              .toString()
-                                              .substring(10, 15);
-                                        });
-                                      }
-                                    },
-                                    controller: lightOffController,
-                                    decoration: const InputDecoration(
-                                      labelText: '00:00',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ])),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Light Off:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24),
+                                textAlign: TextAlign.left,
+                              ),
+                              TextField(
+                                onTap: () async {
+                                  final TimeOfDay? timeOfDay =
+                                    await showTimePicker(
+                                      context: context,
+                                      initialTime: const TimeOfDay(
+                                        hour: 0, minute: 0));
+                                  if (timeOfDay != null) {
+                                    setState(() {
+                                      lightOffController.text = timeOfDay
+                                        .toString()
+                                        .substring(10, 15);
+                                    });
+                                  }
+                                },
+                                controller: lightOffController,
+                                decoration: const InputDecoration(
+                                  labelText: '00:00',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ]
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -163,39 +174,31 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Day Temperature:",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  TextField(
-                                    onTap: () async {
-                                      final TimeOfDay? timeOfDay =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: const TimeOfDay(
-                                                  hour: 0, minute: 0));
-                                      if (timeOfDay != null) {
-                                        setState(() {
-                                          lightOnController.text = timeOfDay
-                                              .toString()
-                                              .substring(10, 15);
-                                        });
-                                      }
-                                    },
-                                    controller: lightOnController,
-                                    decoration: const InputDecoration(
-                                      labelText: '00:00',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ])),
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Day Temperature:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24),
+                                textAlign: TextAlign.left,
+                              ),
+                              TextField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                keyboardType: TextInputType.number,
+                                controller: dayTempController,
+                                decoration: const InputDecoration(
+                                  labelText: '0',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ]
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -210,39 +213,31 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Night Temperature:",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  TextField(
-                                    onTap: () async {
-                                      final TimeOfDay? timeOfDay =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: const TimeOfDay(
-                                                  hour: 0, minute: 0));
-                                      if (timeOfDay != null) {
-                                        setState(() {
-                                          lightOnController.text = timeOfDay
-                                              .toString()
-                                              .substring(10, 15);
-                                        });
-                                      }
-                                    },
-                                    controller: lightOnController,
-                                    decoration: const InputDecoration(
-                                      labelText: '00:00',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ])),
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Night Temperature:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24),
+                                textAlign: TextAlign.left,
+                              ),
+                              TextField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                keyboardType: TextInputType.number,
+                                controller: nightTempController,
+                                decoration: const InputDecoration(
+                                  labelText: '0',
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ]
+                          )
+                        ),
                       ],
                     ),
                   ),
@@ -336,14 +331,14 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
 
   void cancelButtonPressed() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VivariumDisplay(
-              title: "Vivarium Display",
-              vivarium: widget.vivarium,
-              detail: true,
-            )
+      context,
+      MaterialPageRoute(
+        builder: (context) => VivariumDisplay(
+          title: "Vivarium Display",
+          vivarium: widget.vivarium,
+          detail: true,
         )
+      )
     );
   }
 
