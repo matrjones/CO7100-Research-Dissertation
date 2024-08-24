@@ -89,6 +89,7 @@ class _HomepageBodyState extends State<HomepageBody> {
                 if(searchController.text.isEmpty) {
                   return const AddVivariumCard();
                 }
+                return null;
               },
             ),
           ),

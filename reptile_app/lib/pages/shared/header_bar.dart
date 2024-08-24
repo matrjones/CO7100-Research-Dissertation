@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reptile_app/models/vivarium.dart';
 import 'package:reptile_app/pages/my_homepage/my_homepage.dart';
