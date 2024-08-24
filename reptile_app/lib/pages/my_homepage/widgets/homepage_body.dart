@@ -1,8 +1,3 @@
-/*
-  TODO:
-    - change search bar so it does not include add new viv card
-*/
-
 import 'package:flutter/material.dart';
 import 'package:reptile_app/models/vivarium.dart';
 import 'package:reptile_app/pages/my_homepage/widgets/add_vivarium_card.dart';
@@ -88,10 +83,12 @@ class _HomepageBodyState extends State<HomepageBody> {
               itemBuilder: (context, index) {
                 if (index < visibleVivaria.length) {
                   return GestureDetector(
-                      onTap: moveToVivariumDisplay,
+                      onTap: () { moveToVivariumDisplay(index); },
                       child: VivariumCard(vivarium: visibleVivaria[index]));
                 }
-                return const AddVivariumCard();
+                if(searchController.text.isEmpty) {
+                  return const AddVivariumCard();
+                }
               },
             ),
           ),
@@ -100,11 +97,16 @@ class _HomepageBodyState extends State<HomepageBody> {
     );
   }
 
-  void moveToVivariumDisplay() {
+  void moveToVivariumDisplay(int index) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => VivariumDisplay(
-                title: "Vivarium Display", vivarium: allVivaria[0])));
+              title: "Vivarium Display",
+              vivarium: visibleVivaria[index],
+              detail: true,
+            )
+        )
+    );
   }
 }

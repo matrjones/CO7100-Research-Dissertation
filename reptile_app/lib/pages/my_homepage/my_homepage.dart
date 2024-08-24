@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return const Scaffold(
-      appBar: HeaderBar(),
+      appBar: HeaderBar(edit: false,),
       body:
           HomepageBody(), // This trailing comma makes auto-formatting nicer for build methods.
     );

@@ -1,8 +1,16 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reptile_app/models/vivarium.dart';
 import 'package:reptile_app/pages/my_homepage/my_homepage.dart';
+import 'package:reptile_app/pages/vivarium_display/vivarium_display.dart';
 
 class HeaderBar extends StatefulWidget implements PreferredSizeWidget {
-  const HeaderBar({super.key});
+  const HeaderBar({super.key, required this.edit, this.vivarium});
+
+  final Vivarium? vivarium;
+  final bool edit;
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height + 1);
@@ -35,14 +43,15 @@ class _HeaderBarState extends State<HeaderBar> {
             child: Icon(Icons.home),
           ),
         ),
-
-        // SETTINGS BUTTON
         actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: moveToSettings,
-              child: const Icon(Icons.menu),
+          Visibility(
+            visible: widget.edit,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: moveToVivariumEdit,
+                child: const Icon(Icons.edit),
+              ),
             ),
           ),
         ],
@@ -55,9 +64,22 @@ class _HeaderBarState extends State<HeaderBar> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const MyHomePage(title: "Homepage")));
+          builder: (context) => const MyHomePage(title: "Homepage")
+        )
+    );
   }
 
   // SETTINGS BUTTON METHOD
-  void moveToSettings() {}
+  void moveToVivariumEdit() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VivariumDisplay(
+            title: "Vivarium Edit",
+            vivarium: widget.vivarium,
+            detail: false,
+          )
+        )
+    );
+  }
 }
