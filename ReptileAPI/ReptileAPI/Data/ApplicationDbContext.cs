@@ -17,12 +17,14 @@ namespace ReptileAPI.Data
         {
             modelBuilder.Entity<Models.Environment>().ToTable("Environments");
             modelBuilder.Entity<Vivarium>().ToTable("Vivaria");
+            modelBuilder.Entity<Parameter>().ToTable("Parameters");
             base.OnModelCreating(modelBuilder);
         }
 
         // Creating db sets
         public DbSet<Models.Environment> Environments { get; set; }
         public DbSet<Vivarium> Vivaria { get; set; }
+        public DbSet<Parameter> Parameters { get; set; }
 
         // Implementing create date and modified date columns in db
         public override int SaveChanges()

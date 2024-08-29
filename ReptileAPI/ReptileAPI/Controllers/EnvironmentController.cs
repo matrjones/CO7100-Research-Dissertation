@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReptileAPI.Data;
-using ReptileAPI.Models;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ReptileAPI.Controllers
 {
@@ -57,15 +54,15 @@ namespace ReptileAPI.Controllers
         // Get by object method
         [HttpPost]
         [Route("Update")]
-        public IActionResult Update(Models.Environment env)
+        public IActionResult Update(Models.Environment environment)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Environments.Update(env);
+                    _context.Environments.Update(environment);
                     _context.SaveChanges();
-                    return Ok(env);
+                    return Ok(environment);
                 }
                 else
                 {
@@ -99,11 +96,11 @@ namespace ReptileAPI.Controllers
         // Delete method
         [HttpDelete]
         [Route("Delete")]
-        public IActionResult Delete(Models.Environment env)
+        public IActionResult Delete(Models.Environment environment)
         {
             try
             {
-                _context.Environments.Remove(env);
+                _context.Environments.Remove(environment);
                 _context.SaveChanges();
                 return Ok();
             }

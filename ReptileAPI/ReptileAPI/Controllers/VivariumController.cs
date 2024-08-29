@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReptileAPI.Data;
 using ReptileAPI.Models;
 
@@ -37,6 +37,26 @@ namespace ReptileAPI.Controllers
             }
         }
 
+        // Get all method
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetAll()
+        {
+            try
+            {
+                var vivaria = _context.Vivaria
+                    .Include(v => v.Environment)
+                    .Include(v => v.Parameter)
+                    .ToList();
+
+                return Ok(vivaria);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         // Get by ID method
         [HttpGet]
         [Route("GetByID")]
@@ -44,7 +64,11 @@ namespace ReptileAPI.Controllers
         {
             try
             {
-                var vivarium = _context.Vivaria.Where(E => E.Id == ID).First();
+                var vivarium = _context.Vivaria
+                    .Include(v => v.Environment)
+                    .Include(v => v.Parameter)
+                    .First(v => v.Id == ID);
+
                 return Ok(vivarium);
             }
             catch (Exception ex)
@@ -84,7 +108,11 @@ namespace ReptileAPI.Controllers
         {
             try
             {
-                var vivarium = _context.Vivaria.First(E => E.Id == id);
+
+                var vivarium = _context.Vivaria
+                    .Include(v => v.Environment)
+                    .Include(v => v.Parameter)
+                    .First(v => v.Id == id);
                 _context.Vivaria.Remove(vivarium);
                 _context.SaveChanges();
                 return Ok();

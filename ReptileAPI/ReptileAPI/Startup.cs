@@ -27,6 +27,8 @@ namespace ReptileAPI
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.AllowTrailingCommas = true;
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
             services.AddInjections();
@@ -40,11 +42,11 @@ namespace ReptileAPI
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
             else

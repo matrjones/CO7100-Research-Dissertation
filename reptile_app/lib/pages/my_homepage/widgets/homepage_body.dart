@@ -4,6 +4,9 @@ import 'package:reptile_app/pages/my_homepage/widgets/add_vivarium_card.dart';
 import 'package:reptile_app/pages/my_homepage/widgets/vivarium_card.dart';
 import 'package:reptile_app/pages/shared/search_bar.dart';
 import 'package:reptile_app/pages/vivarium_display/vivarium_display.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class HomepageBody extends StatefulWidget implements PreferredSizeWidget {
   const HomepageBody({super.key});
@@ -20,7 +23,14 @@ class _HomepageBodyState extends State<HomepageBody> {
   void initState() {
     super.initState();
     searchController.addListener(updateSearch);
-    visibleVivaria = List.from(allVivaria);
+    fetchVivaria().then((data){
+      setState(() {
+        allVivaria = data;
+        visibleVivaria = List.from(allVivaria);
+      });
+    }).catchError((error) {
+      throw error;
+    });
   }
 
   @override
@@ -29,9 +39,22 @@ class _HomepageBodyState extends State<HomepageBody> {
     super.dispose();
   }
 
+  Future<List<Vivarium>> fetchVivaria() async {
+    final response = await http.get(Uri.parse('http://192.168.1.153:8080/api/Vivarium/getall'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body) as List<dynamic>;
+      return jsonResponse.map((item) => Vivarium.fromJson(item as Map<String, dynamic>)).toList();
+    }
+    else {
+      throw Exception('Failed to fetch vivaria');
+    }
+  }
+
   void updateSearch() {
     setState(() {
       visibleVivaria.clear();
+
       for (int i = 0; i < allVivaria.length; i++) {
         if (allVivaria[i]
             .name
@@ -44,23 +67,7 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   // LIST OF VIVARIA
-  List<Vivarium> allVivaria = [
-    Vivarium(
-      name: 'Viv 1',
-      lighting: true,
-      temperature: 28.0,
-    ),
-    Vivarium(
-      name: 'Vivarium 2',
-      lighting: false,
-      temperature: 29.9,
-    ),
-    Vivarium(
-      name: 'Vivarium 3',
-      lighting: true,
-      temperature: 38.7,
-    )
-  ];
+  late List<Vivarium> allVivaria;
 
   // LIST OF VISIBLE VIVARIA
   List<Vivarium> visibleVivaria = [];
@@ -83,11 +90,13 @@ class _HomepageBodyState extends State<HomepageBody> {
               itemBuilder: (context, index) {
                 if (index < visibleVivaria.length) {
                   return GestureDetector(
-                      onTap: () { moveToVivariumDisplay(index); },
+                      onTap: () { moveToVivariumDisplay(index: index); },
                       child: VivariumCard(vivarium: visibleVivaria[index]));
                 }
                 if(searchController.text.isEmpty) {
-                  return const AddVivariumCard();
+                  return GestureDetector(
+                      onTap: () { moveToVivariumDisplay(); },
+                      child: const AddVivariumCard());
                 }
                 return null;
               },
@@ -98,16 +107,29 @@ class _HomepageBodyState extends State<HomepageBody> {
     );
   }
 
-  void moveToVivariumDisplay(int index) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VivariumDisplay(
-              title: "Vivarium Display",
-              vivarium: visibleVivaria[index],
-              detail: true,
-            )
-        )
-    );
+  void moveToVivariumDisplay({int index = -1}) {
+    if(index > -1){
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VivariumDisplay(
+                title: "Vivarium Display",
+                vivarium: visibleVivaria[index],
+                detail: true,
+              )
+          )
+      );
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const VivariumDisplay(
+                title: "Add Vivarium",
+                vivarium: null,
+                detail: false,
+              )
+          )
+      );
+    }
   }
 }

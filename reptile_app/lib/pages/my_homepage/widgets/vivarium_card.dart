@@ -31,7 +31,7 @@ class VivariumCard extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10.0)),
                 child: Image.asset(
-                  vivarium.lighting
+                  vivarium.environment.light
                       ? 'assets/images/light_bulb_on.png'
                       : 'assets/images/light_bulb_off.png',
                   width: 60,
@@ -40,7 +40,7 @@ class VivariumCard extends StatelessWidget {
               ),
               Padding(
                   padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                  child: Text(vivarium.lighting ? 'ON' : 'OFF',
+                  child: Text(vivarium.environment.light ? 'ON' : 'OFF',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 40,
@@ -55,12 +55,12 @@ class VivariumCard extends StatelessWidget {
                 const SizedBox(height: 4.0),
                 Center(
                   child: Text(
-                    '${vivarium.temperature}°C',
+                    '${vivarium.environment.temperature}°C',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 40,
                       color:
-                          vivarium.temperature > 30 ? Colors.red : Colors.green,
+                          vivarium.environment.temperature > 30 ? Colors.red : Colors.green,
                     ),
                   ),
                 )

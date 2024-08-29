@@ -12,7 +12,7 @@ namespace ReptileAPI.Data
     {
         [Key]
         public Guid Id { get; set; }
-        public DateTime CreatedDate { get; private set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
     }
 }
