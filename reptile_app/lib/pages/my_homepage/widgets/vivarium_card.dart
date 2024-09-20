@@ -8,6 +8,18 @@ class VivariumCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TimeOfDay now = TimeOfDay.now();
+    bool isDayTime = compareTimeOfDay(now, vivarium.parameter.lightOn) &&
+        compareTimeOfDay(vivarium.parameter.lightOff, now);
+
+    int targetTemperature = isDayTime
+        ? vivarium.parameter.dayTemp
+        : vivarium.parameter.nightTemp;
+
+    bool isTempTooHigh = vivarium.environment.temperature.round() > targetTemperature;
+    bool isTempTooLow = vivarium.environment.temperature.round() < targetTemperature;
+    Color tempColor = (isTempTooHigh || isTempTooLow) ? Colors.red : Colors.green;
+
     return Card(
       elevation: 4.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
@@ -55,12 +67,11 @@ class VivariumCard extends StatelessWidget {
                 const SizedBox(height: 4.0),
                 Center(
                   child: Text(
-                    '${vivarium.environment.temperature}°C',
+                    '${vivarium.environment.temperature.round()}°C',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 40,
-                      color:
-                          vivarium.environment.temperature > 30 ? Colors.red : Colors.green,
+                      color: tempColor,
                     ),
                   ),
                 )
@@ -70,5 +81,9 @@ class VivariumCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool compareTimeOfDay(TimeOfDay t1, TimeOfDay t2) {
+    return t1.hour * 60 + t1.minute > t2.hour * 60 + t2.minute;
   }
 }

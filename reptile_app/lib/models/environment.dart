@@ -1,6 +1,6 @@
 class Environment {
   final String? id;
-  int temperature;
+  double temperature;
   bool light;
   final DateTime? createdDate;
   final DateTime? modifiedDate;
@@ -14,9 +14,11 @@ class Environment {
   });
 
   factory Environment.fromJson(Map<String, dynamic> json) {
+    var tempValue = json['Temperature'];
+    double temperature = (tempValue is int) ? tempValue.toDouble() : tempValue;
     try {
       return Environment(
-        temperature: json['Temperature'] as int,
+        temperature: temperature,
         light: json['Light'] as bool,
         id: json['Id'] as String,
         createdDate: DateTime.parse(json['CreatedDate'] as String),

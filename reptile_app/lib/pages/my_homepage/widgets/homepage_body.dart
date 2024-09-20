@@ -17,19 +17,31 @@ class HomepageBody extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _HomepageBodyState extends State<HomepageBody> {
+  Timer? _timer;
   final searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     searchController.addListener(updateSearch);
-    fetchVivaria().then((data){
+    fetchVivaria().then((data) {
       setState(() {
         allVivaria = data;
         visibleVivaria = List.from(allVivaria);
       });
     }).catchError((error) {
       throw error;
+    });
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer)
+    {
+      fetchVivaria().then((data) {
+        setState(() {
+          allVivaria = data;
+          visibleVivaria = List.from(allVivaria);
+        });
+      }).catchError((error) {
+        throw error;
+      });
     });
   }
 

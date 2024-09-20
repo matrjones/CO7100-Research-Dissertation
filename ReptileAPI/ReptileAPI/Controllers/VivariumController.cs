@@ -108,11 +108,21 @@ namespace ReptileAPI.Controllers
         {
             try
             {
-
                 var vivarium = _context.Vivaria
                     .Include(v => v.Environment)
                     .Include(v => v.Parameter)
                     .First(v => v.Id == id);
+
+                if (vivarium.Environment != null)
+                {
+                    _context.Environments.Remove(vivarium.Environment);
+                }
+
+                if (vivarium.Parameter != null)
+                {
+                    _context.Parameters.Remove(vivarium.Parameter);
+                }
+
                 _context.Vivaria.Remove(vivarium);
                 _context.SaveChanges();
                 return Ok();
