@@ -132,11 +132,13 @@ try:
 # STOP THE PROGRAM
 except Exception as e:
 	print(e)
+	update_vivarium(0, 0)
 	lgpio.gpio_write(h, 17, 1)
 	lgpio.gpio_write(h, 27, 1)
 	print('Temperature reading stopped.')
 # STOP THE PROGRAM
 except KeyboardInterrupt:
+	update_vivarium(0, 0)
 	lgpio.gpio_write(h, 17, 1)
 	lgpio.gpio_write(h, 27, 1)
 	print('Temperature reading stopped.')
