@@ -3,25 +3,23 @@ import 'package:reptile_app/models/vivarium.dart';
 import 'package:reptile_app/pages/my_homepage/my_homepage.dart';
 import 'package:reptile_app/pages/vivarium_display/vivarium_display.dart';
 
+// Definition of header bar
 class HeaderBar extends StatefulWidget implements PreferredSizeWidget {
   const HeaderBar({super.key, required this.edit, this.vivarium});
-
   final Vivarium? vivarium;
   final bool edit;
-
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height + 1);
-
   @override
   State<HeaderBar> createState() => _HeaderBarState();
 }
 
+// Definition for functionality and appearance of vivarium cards
 class _HeaderBarState extends State<HeaderBar> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       AppBar(
-        // APP  TITLE
         title: const Text(
           "Vivarium Tracker",
           style: TextStyle(
@@ -31,8 +29,6 @@ class _HeaderBarState extends State<HeaderBar> {
         ),
         centerTitle: true,
         backgroundColor: Colors.yellow,
-
-        // HOME BUTTON
         leading: GestureDetector(
           onTap: moveToHome,
           child: const Padding(
@@ -56,7 +52,7 @@ class _HeaderBarState extends State<HeaderBar> {
     ]);
   }
 
-  // HOME BUTTON METHOD
+  // Home button method
   void moveToHome() {
     Navigator.push(
         context,
@@ -66,7 +62,7 @@ class _HeaderBarState extends State<HeaderBar> {
     );
   }
 
-  // SETTINGS BUTTON METHOD
+  // Settings button method
   void moveToVivariumEdit() {
     Navigator.push(
         context,

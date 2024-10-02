@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+// Body of the homepage
 class HomepageBody extends StatefulWidget implements PreferredSizeWidget {
   const HomepageBody({super.key});
   @override
@@ -20,6 +21,7 @@ class _HomepageBodyState extends State<HomepageBody> {
   Timer? _timer;
   final searchController = TextEditingController();
 
+  // Attaches controllers and fetches vivarium data for vivarium display cards
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,8 @@ class _HomepageBodyState extends State<HomepageBody> {
     }).catchError((error) {
       throw error;
     });
+
+    // Refreshes vivarium card data every 5 seconds to display most up-to-date data
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer)
     {
       fetchVivaria().then((data) {
@@ -45,12 +49,14 @@ class _HomepageBodyState extends State<HomepageBody> {
     });
   }
 
+  // Method to dispose of child objects when parent object is out of scope
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
   }
 
+  // Call to the API endpoint and return vivarium list
   Future<List<Vivarium>> fetchVivaria() async {
     final response = await http.get(Uri.parse('http://192.168.1.153:8080/api/Vivarium/getall'));
 
@@ -63,10 +69,10 @@ class _HomepageBodyState extends State<HomepageBody> {
     }
   }
 
+  // Method to update vivarium cards based on searchbar input
   void updateSearch() {
     setState(() {
       visibleVivaria.clear();
-
       for (int i = 0; i < allVivaria.length; i++) {
         if (allVivaria[i]
             .name
@@ -78,12 +84,13 @@ class _HomepageBodyState extends State<HomepageBody> {
     });
   }
 
-  // LIST OF VIVARIA
+  // List of vivaria
   late List<Vivarium> allVivaria;
 
-  // LIST OF VISIBLE VIVARIA
+  // List of visible vivaria
   List<Vivarium> visibleVivaria = [];
 
+  // Build for the homepage body
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,13 +105,17 @@ class _HomepageBodyState extends State<HomepageBody> {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
+
+              // Adding cards to the homepage body with tap events
               itemCount: visibleVivaria.length + 1,
               itemBuilder: (context, index) {
+                // Add cards for each vivarium
                 if (index < visibleVivaria.length) {
                   return GestureDetector(
                       onTap: () { moveToVivariumDisplay(index: index); },
                       child: VivariumCard(vivarium: visibleVivaria[index]));
                 }
+                // Add "add vivarium" card when searchbar is empty
                 if(searchController.text.isEmpty) {
                   return GestureDetector(
                       onTap: () { moveToVivariumDisplay(); },
@@ -119,7 +130,9 @@ class _HomepageBodyState extends State<HomepageBody> {
     );
   }
 
+  // Method to navigate to vivarium display page
   void moveToVivariumDisplay({int index = -1}) {
+    // If index exists, navigate to vivarium display
     if(index > -1){
       Navigator.push(
           context,
@@ -131,7 +144,9 @@ class _HomepageBodyState extends State<HomepageBody> {
               )
           )
       );
-    } else {
+    }
+    // Navigate to add vivarium page
+    else {
       Navigator.push(
           context,
           MaterialPageRoute(

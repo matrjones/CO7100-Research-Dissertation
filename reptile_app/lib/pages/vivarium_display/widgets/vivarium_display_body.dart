@@ -1,10 +1,4 @@
-/*
-TODO
-  -  implement green/red temperature display
-*/
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reptile_app/models/environment.dart';
@@ -17,13 +11,10 @@ import 'package:http/http.dart' as http;
 class VivariumDisplayBody extends StatefulWidget
     implements PreferredSizeWidget {
   const VivariumDisplayBody({super.key, required this.vivarium, required this.detail});
-
   final Vivarium? vivarium;
   final bool detail;
-
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height + 1);
-
   @override
   State<VivariumDisplayBody> createState() => _VivariumDisplayBodyState();
 }
@@ -35,6 +26,7 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
   final dayTempController = TextEditingController();
   final nightTempController = TextEditingController();
 
+  // Method to dispose of child objects when parent object is out of scope
   @override
   void dispose() {
     vivNameController.dispose();
@@ -45,11 +37,11 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
     super.dispose();
   }
 
+  // Build for the vivarium display body
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        // VIVARIUM NAME
         child: IgnorePointer(
         ignoring: widget.detail,
           child: Column(
@@ -76,10 +68,11 @@ class _VivariumDisplayBodyState extends State<VivariumDisplayBody> {
                 )
               ),
 
-              // LIGHTING
+              // Light off
               Row(
                 children: [
-                  // LIGHT ON
+
+                  // Light on
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

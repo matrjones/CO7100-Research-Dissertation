@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Parameter object definition
 class Parameter {
+  // Instance variables
   final String? id;
   TimeOfDay lightOn;
   TimeOfDay lightOff;
@@ -9,6 +11,7 @@ class Parameter {
   final DateTime? createdDate;
   final DateTime? modifiedDate;
 
+  // Constructor
   Parameter({
     this.id,
     required this.lightOn,
@@ -19,6 +22,7 @@ class Parameter {
     this.modifiedDate,
   });
 
+  // Creates parameter object from JSON string
   factory Parameter.fromJson(Map<String, dynamic> json) {
     try {
       return Parameter(
@@ -39,6 +43,7 @@ class Parameter {
     }
   }
 
+  // Creates JSON string from parameter object
   Map<String, dynamic> toJson() {
     var json = {
       'LightOn': "${lightOn.toString().substring(10,15)}:00",
@@ -47,6 +52,7 @@ class Parameter {
       'NightTemp': nightTemp,
     };
 
+    // Assigns ID value to JSON ID
     if(id != null){
       json['Id'] = id!;
     }

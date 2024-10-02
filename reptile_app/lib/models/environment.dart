@@ -1,10 +1,13 @@
+// Environment object definition
 class Environment {
+  // Instance variables
   final String? id;
   double temperature;
   bool light;
   final DateTime? createdDate;
   final DateTime? modifiedDate;
 
+  // Constructor
   Environment({
     this.id,
     required this.temperature,
@@ -13,6 +16,7 @@ class Environment {
     this.modifiedDate,
   });
 
+  // Creates environment object from JSON string
   factory Environment.fromJson(Map<String, dynamic> json) {
     var tempValue = json['Temperature'];
     double temperature = (tempValue is int) ? tempValue.toDouble() : tempValue;
@@ -29,12 +33,14 @@ class Environment {
     }
   }
 
+  // Creates JSON string from environment object
   Map<String, dynamic> toJson() {
     var json = {
       'Temperature': temperature,
       'Light': light,
     };
 
+    // Assigns ID value to JSON ID
     if(id != null) {
       json['Id'] = id!;
     }

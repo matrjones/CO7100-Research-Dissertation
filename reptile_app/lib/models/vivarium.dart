@@ -1,6 +1,7 @@
 import 'package:reptile_app/models/environment.dart';
 import 'package:reptile_app/models/parameter.dart';
 
+// Vivarium object definition
 class Vivarium {
   final String? id;
   String name;
@@ -9,6 +10,7 @@ class Vivarium {
   final DateTime? modifiedDate;
   Parameter parameter;
 
+  // Constructor
   Vivarium({
     this.id,
     required this.name,
@@ -18,6 +20,7 @@ class Vivarium {
     required this.parameter,
   });
 
+  // Creates vivarium object from JSON string
   factory Vivarium.fromJson(Map<String, dynamic> json) {
     try {
       return Vivarium(
@@ -33,6 +36,7 @@ class Vivarium {
     }
   }
 
+  // Creates JSON string from vivarium object
   Map<String, dynamic> toJson() {
     var json = {
       'Name': name,
@@ -40,6 +44,7 @@ class Vivarium {
       'Parameter': parameter.toJson(),
     };
 
+    // Assigns ID value to JSON ID
     if(id != null){
       json['Id'] = id!;
     }

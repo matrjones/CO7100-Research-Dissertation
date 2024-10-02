@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+// Card used on homepage to navigate to creating a new vivarium page
 class AddVivariumCard extends StatelessWidget {
   const AddVivariumCard({super.key});
 
+  // Build for the add vivarium card
   @override
   Widget build(BuildContext context) {
     return Card(
