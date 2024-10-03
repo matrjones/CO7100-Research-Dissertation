@@ -41,8 +41,8 @@ class _HomepageBodyState extends State<HomepageBody> {
       fetchVivaria().then((data) {
         setState(() {
           allVivaria = data;
-          visibleVivaria = List.from(allVivaria);
         });
+        updateSearch();
       }).catchError((error) {
         throw error;
       });
